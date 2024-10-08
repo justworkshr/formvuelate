@@ -47,6 +47,10 @@ export default {
     unwrappedRows: {
       type: Boolean,
       default: false
+    },
+    preventModelCleanupOnSchemaChange: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -61,6 +65,10 @@ export default {
         // If a field condition is true, it will be rendered
         if (typeof condition !== 'function' && field.condition(formModel.value) === true) return true
       }
+
+    if (!props.preventModelCleanupOnSchemaChange) {
+      props.row.forEach(field => deleteFormModelProperty(formModel, field.model));
+    }
 
       return false
     })
